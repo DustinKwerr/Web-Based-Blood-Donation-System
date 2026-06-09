@@ -3,12 +3,39 @@ let currentUser = "Anonymous Donor";
 let userRole = "Donor";
 
 /**
- * Tab Navigation Router Engine (Replicates layout controls of PySide's QTabWidget)
+ * Tab Navigation Router Engine
  */
 function switchTab(tabId) {
-    const tabs = document.querySelectorAll('.tab-content');
-    tabs.forEach(tab => tab.classList.add('hidden'));
-    document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+    // Hide all tabs
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+        tab.classList.add('hidden');
+    });
+
+    // Show selected tab
+    const targetTab = document.getElementById(`tab-${tabId}`);
+    if (targetTab) {
+        targetTab.classList.remove('hidden');
+        targetTab.classList.add('active');
+    }
+
+    // Move active indicator
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+        
+        const onclickAttr = item.getAttribute('onclick');
+        if (onclickAttr && onclickAttr.includes(`'${tabId}'`)) {
+            item.classList.add('active');
+        }
+    });
+}
+
+// Add logout function (was missing)
+function logout() {
+    if (confirm("Are you sure you want to logout?")) {
+        alert("You have been logged out.");
+        // You can redirect or reset here
+    }
 }
 
 /**

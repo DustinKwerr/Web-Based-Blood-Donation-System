@@ -110,3 +110,74 @@
     resize: none;
     outline: none;
 }
+
+/* ==================== FIGMA-STYLE ENHANCEMENTS ==================== */
+
+.sidebar {
+    background: linear-gradient(180deg, #e53e3e 0%, #c53030 100%);
+    color: white;
+}
+
+/* ==================== SIDEBAR NAVIGATION ==================== */
+
+.nav-item {
+    transition: all 0.25s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    border-radius: 0 12px 12px 0;
+    margin: 2px 0;
+}
+
+.nav-item:hover {
+    background: linear-gradient(90deg, #ef7674, #c42348);
+    transform: translateX(4px);
+    box-shadow: 4px 0 0 #ffffff inset;        /* Thin white line on hover */
+}
+
+.nav-item.active {
+    background: #e53e3e;
+    box-shadow: 4px 0 0 #ffffff inset;        /* Permanent white indicator when active */
+    transform: none;
+}
+
+.nav-item.active:hover {
+    background: linear-gradient(90deg, #ef7674, #c42348);
+}
+
+/* Rest of your styles remain the same */
+.welcome-banner {
+    background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+    color: white;
+}
+
+.main-grid {
+    background-image: 
+        linear-gradient(#e5e7eb 1px, transparent 1px),
+        linear-gradient(90deg, #e5e7eb 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+.form-row label {
+    width: 160px;
+    flex-shrink: 0;
+    font-weight: 500;
+}
+
+.btn-primary {
+    background-color: #e53e3e !important;
+    border-radius: 12px !important;
+    padding: 14px 24px !important;
+    font-weight: 600;
+}
+.btn-primary:hover {
+    background-color: #c42348 !important;
+}
