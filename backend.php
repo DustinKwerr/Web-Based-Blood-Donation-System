@@ -66,17 +66,6 @@ class BloodDonationDatabase implements Searchable {
         return $this->persistentConn;
     }
 
-    public function authenticateUser(string $username, string $password): ?string {
-        $query = "SELECT password_hash, role FROM users WHERE username = :username";
-        $stmt = $this->getConnection()->prepare($query);
-        $stmt->execute([':username' => $username]);
-        $result = $stmt->fetch();
-        if ($result && $result['password_hash'] === $password) {
-            return $result['role'];
-        }
-        return null;
-    }
-
     public function searchByName(string $name): ?Donor {
         $query = "SELECT name, age, contact, blood_type, weight FROM donors WHERE name = :name";
         $stmt = $this->getConnection()->prepare($query);
@@ -155,15 +144,6 @@ try {
     $payload = json_decode($argv[2] ?? '{}', true);
 
     switch ($action) {
-        case 'login':
-            $role = $db->authenticateUser($payload['username'] ?? '', $payload['password'] ?? '');
-            if ($role) {
-                echo json_encode(["success" => true, "role" => $role, "username" => $payload['username']]);
-            } else {
-                echo json_encode(["success" => false, "message" => "Invalid credentials."]);
-            }
-            break;
-
         case 'inventory':
             echo json_encode($inventory->getInventoryData());
             break;

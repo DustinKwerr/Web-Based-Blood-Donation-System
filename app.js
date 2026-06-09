@@ -1,66 +1,6 @@
 // Global Application Session Variables (Mimics PySide's class instance attributes)
-let currentUser = null;
-let userRole = null;
-
-/**
- * Authentication check interface handler simulation routing logic rules
- */
-function authenticateUser(user, pwd) {
-    if (user.toLowerCase() === "admin") return "Staff";
-    return "Donor";
-}
-
-/**
- * Interactive execution routine: Handles Application Log-In Sequence 
- */
-function login() {
-    const user = document.getElementById("usernameInput").value.trim();
-    const pwd = document.getElementById("passwordInput").value.trim();
-    const errorLabel = document.getElementById("loginError");
-
-    if (!user || !pwd) {
-        errorLabel.innerText = "Please fill all fields";
-        return;
-    }
-
-    const role = authenticateUser(user, pwd);
-    if (role) {
-        currentUser = user;
-        userRole = role;
-
-        document.getElementById("loginWidget").classList.add("hidden");
-        document.getElementById("mainAppWidget").classList.remove("hidden");
-        document.getElementById("userWelcomeDisplay").innerText = `Logged in as: ${user} (${role})`;
-
-        // System verification routing controlling administrative level layout visualization 
-        const adminMenu = document.getElementById("adminMenu");
-        if (role !== "Donor") {
-            adminMenu.classList.remove("hidden");
-        } else {
-            adminMenu.classList.add("hidden");
-        }
-
-        alert(`Login Successful! Welcome, ${user}!`);
-        switchTab('home');
-        loadInventory();
-    } else {
-        errorLabel.innerText = "Invalid username or password";
-    }
-}
-
-/**
- * Interactive execution routine: Disconnects current session contexts
- */
-function logout() {
-    currentUser = null;
-    userRole = null;
-    document.getElementById("usernameInput").value = "";
-    document.getElementById("passwordInput").value = "";
-    document.getElementById("loginError").innerText = "";
-    
-    document.getElementById("mainAppWidget").classList.add("hidden");
-    document.getElementById("loginWidget").classList.remove("hidden");
-}
+let currentUser = "Anonymous Donor";
+let userRole = "Donor";
 
 /**
  * Tab Navigation Router Engine (Replicates layout controls of PySide's QTabWidget)
@@ -69,32 +9,6 @@ function switchTab(tabId) {
     const tabs = document.querySelectorAll('.tab-content');
     tabs.forEach(tab => tab.classList.add('hidden'));
     document.getElementById(`tab-${tabId}`).classList.remove('hidden');
-}
-
-/**
- * Dialog/Modal window interface controllers
- */
-function showForgotPassword() {
-    document.getElementById("forgotPasswordModal").classList.remove("hidden");
-}
-
-function hideForgotPassword() {
-    document.getElementById("forgotPasswordModal").classList.add("hidden");
-    document.getElementById("resetUsernameInput").value = "";
-    document.getElementById("resetModalError").innerText = "";
-}
-
-function submitForgotPassword() {
-    const username = document.getElementById("resetUsernameInput").value.trim();
-    const errorLabel = document.getElementById("resetModalError");
-
-    if (username) {
-        alert(`Success: Password reset link sent to ${username}`);
-        hideForgotPassword();
-    } else {
-        errorLabel.innerText = "Please enter username";
-        errorLabel.className = "text-sm font-medium mb-3 h-5 text-red-500";
-    }
 }
 
 /**
@@ -108,7 +22,7 @@ function processRegistration() {
         alert("Error: Name is required");
         return;
     }
-    output.innerText = "✅ Profile saved successfully!";
+    output.innerText = "Profile saved successfully!";
     output.className = "text-center font-medium text-green-600";
 }
 
@@ -124,10 +38,10 @@ function verifyEligibility() {
 
     try {
         if (age >= 18 && age <= 65 && weight >= 50 && months >= 3 && !illness) {
-            output.innerText = "✅ ELIGIBLE TO DONATE";
+            output.innerText = "ELIGIBLE TO DONATE";
             output.className = "text-center text-xl font-bold p-2 bg-green-50 text-green-600 border border-green-200 rounded";
         } else {
-            output.innerText = "❌ NOT ELIGIBLE";
+            output.innerText = "NOT ELIGIBLE";
             output.className = "text-center text-xl font-bold p-2 bg-red-50 text-red-600 border border-red-200 rounded";
         }
     } catch (err) {
@@ -177,3 +91,8 @@ function handleSearch() {
     const mode = document.getElementById("searchMode").value;
     document.getElementById("searchOutput").value = `Results for '${query}' (${mode}):\n\nNo records found (implement API database connect routine logic handles).`;
 }
+
+// Automatically load mock elements on layout initializing sequences 
+window.addEventListener('DOMContentLoaded', () => {
+    loadInventory();
+});

@@ -36,10 +36,6 @@ function runPHPModule(action, payload, res) {
 // REST API ENDPOINT OVERLAYS
 // =========================================================================
 
-app.post('/api/login', (req, res) => {
-    runPHPModule('login', req.body, res);
-});
-
 app.get('/api/inventory', (req, res) => {
     runPHPModule('inventory', {}, res);
 });
@@ -58,5 +54,5 @@ app.get('/api/search', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`🚀 Unified Web Backend Active: Node.js running on http://localhost:${PORT}`);
+    console.log(`Unified Web Backend Active: Node.js running on http://localhost:${PORT}`);
 });

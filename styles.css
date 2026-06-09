@@ -8,20 +8,7 @@
 .text-crimson { color: var(--crimson); }
 .bg-crimson { background-color: var(--crimson); }
 
-/* Form Component styling mimicking standard desktop QLineEdit configurations */
-.web-input {
-    width: 100%;
-    max-width: 380px;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    border: 2px solid #ddd;
-    border-radius: 6px;
-    padding: 12px;
-    outline: none;
-    transition: border-color 0.2s ease-in-out;
-}
-.web-input:focus, .form-input:focus {
+.form-input:focus {
     border-color: var(--crimson);
 }
 
@@ -42,18 +29,6 @@
 }
 .btn-primary:hover {
     background-color: var(--crimson-hover);
-}
-
-.btn-flat {
-    width: 100%;
-    max-width: 380px;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    background-color: transparent;
-    color: var(--crimson);
-    font-weight: 500;
-    padding: 8px;
 }
 
 /* Header Dropdown Menu Systems mapping directly over native QMenuBar UI components */
