@@ -133,8 +133,9 @@
     background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
 }
 .main-grid {
-    background-image: linear-gradient(#e5e7eb 1px, transparent 1px),
-    linear-gradient(90deg, #e5e7eb 1px, transparent 1px);
+    background-image: 
+        linear-gradient(#e5e7eb 1px, transparent 1px),
+        linear-gradient(90deg, #e5e7eb 1px, transparent 1px);
     background-size: 40px 40px;
 }
 
@@ -170,21 +171,25 @@
 .form-row {
     display: flex;
     align-items: center;
-    gap: 16px;
-    margin-bottom: 12px;
+    gap: 1rem;
+    margin-bottom: 1rem;
 }
-.form-row label {
-    width: 160px;
-    flex-shrink: 0;
-    font-weight: 500;
+.form-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.75rem;
+    font-size: 1rem;
 }
-
 .btn-primary {
-    background-color: #e53e3e !important;
-    border-radius: 12px !important;
-    padding: 14px 24px !important;
+    background-color: #e53e3e;
+    color: white;
+    padding: 0.85rem 2rem;
+    border-radius: 0.75rem;
     font-weight: 600;
+    transition: all 0.2s;
 }
 .btn-primary:hover {
-    background-color: #c42348 !important;
+    background-color: #c42348;
+    transform: translateY(-1px);
 }

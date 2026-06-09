@@ -42,287 +42,219 @@ BLOOD BANK PORTAL: IDENTIFIER
 ================================================================================
 -->
 
+<!-- 
+================================================================================
+BLOOD BANK PORTAL: IDENTIFIER
+================================================================================
+[ELEMENT IDs] ... (unchanged)
+================================================================================
+-->
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LifeSaver Blood Bank Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-    />
-    <link rel="stylesheet" href="styles.css" />
-    <style>
-      .sidebar {
-        background: linear-gradient(180deg, #e53e3e 0%, #c53030 100%);
-      }
-      .nav-item {
-        transition: all 0.25s ease;
-        position: relative;
-      }
-      .nav-item:hover {
-        background: linear-gradient(90deg, #ef7674, #c42348);
-        transform: translateX(4px);
-        box-shadow: 4px 0 0 #ffffff inset;
-      }
-      .nav-item.active {
-        background: #e53e3e;
-        box-shadow: 4px 0 0 #ffffff inset;
-      }
-      .welcome-banner {
-        background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
-      }
-      .main-grid {
-        background-image: linear-gradient(#e5e7eb 1px, transparent 1px),
-          linear-gradient(90deg, #e5e7eb 1px, transparent 1px);
-        background-size: 40px 40px;
-      }
-    </style>
-  </head>
-  <body class="bg-gray-100 min-h-screen font-sans">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-100 min-h-screen font-sans">
+
     <div class="flex h-screen overflow-hidden" id="mainAppWidget">
-      <!-- Sidebar -->
-      <div class="w-72 sidebar text-white flex flex-col">
-        <!-- Logo -->
-        <div class="p-6 border-b border-white/20">
-          <div class="flex items-center gap-3">
-            <!-- TODO: Replace with custom SVG blood drop icon -->
-            <div
-              class="w-11 h-11 bg-white rounded-2xl flex items-center justify-center text-red-600 text-3xl font-bold shadow-inner"
-            >
-              <i class="fa-solid fa-droplet"></i>
+        
+        <!-- Sidebar -->
+        <div class="w-72 sidebar text-white flex flex-col">
+            <div class="p-6 border-b border-white/20">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 bg-white rounded-2xl flex items-center justify-center text-red-600 text-3xl font-bold shadow-inner">
+                        <i class="fa-solid fa-droplet"></i>
+                    </div>
+                    <div class="text-3xl font-bold tracking-tighter">LIFESAVER</div>
+                </div>
             </div>
-            <div class="text-3xl font-bold tracking-tighter">LIFELINE</div>
-          </div>
-        </div>
 
-        <!-- User Profile -->
-        <div class="p-6 border-b border-white/20 bg-white/10">
-          <div class="flex items-center gap-4">
-            <div
-              class="w-12 h-12 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/30"
-            >
-              <i class="fa-solid fa-user text-2xl"></i>
+            <div class="p-6 border-b border-white/20 bg-white/10">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/30">
+                        <i class="fa-solid fa-user text-2xl"></i>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-white" id="userWelcomeDisplay"></p>
+                        <p class="text-sm text-white/80 flex items-center gap-1.5">
+                            <span class="inline-block w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+                            Donor
+                        </p>
+                    </div>
+                </div>
             </div>
-            <div>
-              <p class="font-semibold text-white" id="userWelcomeDisplay"></p>
-              <p class="text-sm text-white/80 flex items-center gap-1.5">
-                <span
-                  class="inline-block w-2 h-2 bg-emerald-400 rounded-full animate-pulse"
-                ></span>
-                Donor
-              </p>
+
+            <div class="flex-1 overflow-y-auto p-4 space-y-1">
+                <a href="#" onclick="switchTab('home')" class="nav-item active flex items-center gap-3 px-5 py-3.5 rounded-xl text-white">
+                    <i class="fa-solid fa-house w-5"></i>
+                    <span class="font-medium">Dashboard</span>
+                </a>
+                <a href="#" onclick="switchTab('profile')" class="nav-item flex items-center gap-3 px-5 py-3.5 rounded-xl text-white">
+                    <i class="fa-solid fa-user w-5"></i>
+                    <span class="font-medium">My Profile</span>
+                </a>
+                <a href="#" onclick="switchTab('eligibility')" class="nav-item flex items-center gap-3 px-5 py-3.5 rounded-xl text-white">
+                    <i class="fa-solid fa-clipboard-check w-5"></i>
+                    <span class="font-medium">Eligibility Check</span>
+                </a>
+                <a href="#" onclick="switchTab('locations')" class="nav-item flex items-center gap-3 px-5 py-3.5 rounded-xl text-white">
+                    <i class="fa-solid fa-location-dot w-5"></i>
+                    <span class="font-medium">Donation Locations</span>
+                </a>
+
+                <div id="adminMenu" class="hidden">
+                    <div class="px-5 py-3 mt-6 text-white/70 text-xs font-medium tracking-widest">ADMIN TOOLS</div>
+                    <a href="#" onclick="switchTab('inventory')" class="nav-item flex items-center gap-3 px-5 py-3.5 rounded-xl text-white">
+                        <i class="fa-solid fa-droplet w-5"></i>
+                        <span class="font-medium">Blood Inventory</span>
+                    </a>
+                    <a href="#" onclick="switchTab('search')" class="nav-item flex items-center gap-3 px-5 py-3.5 rounded-xl text-white">
+                        <i class="fa-solid fa-magnifying-glass w-5"></i>
+                        <span class="font-medium">Search Donors</span>
+                    </a>
+                </div>
             </div>
-          </div>
-        </div>
 
-        <!-- Navigation -->
-        <div class="flex-1 overflow-y-auto p-4 space-y-1">
-          <a
-            href="#"
-            onclick="switchTab('home')"
-            class="nav-item active flex items-center gap-3 px-5 py-3.5 rounded-xl text-white"
-          >
-            <i class="fa-solid fa-house w-5"></i>
-            <span class="font-medium">Dashboard</span>
-          </a>
-          <a
-            href="#"
-            onclick="switchTab('profile')"
-            class="nav-item flex items-center gap-3 px-5 py-3.5 rounded-xl text-white"
-          >
-            <i class="fa-solid fa-user w-5"></i>
-            <span class="font-medium">My Profile</span>
-          </a>
-          <a
-            href="#"
-            onclick="switchTab('eligibility')"
-            class="nav-item flex items-center gap-3 px-5 py-3.5 rounded-xl text-white"
-          >
-            <i class="fa-solid fa-clipboard-check w-5"></i>
-            <span class="font-medium">Eligibility Check</span>
-          </a>
-          <a
-            href="#"
-            onclick="switchTab('locations')"
-            class="nav-item flex items-center gap-3 px-5 py-3.5 rounded-xl text-white"
-          >
-            <i class="fa-solid fa-location-dot w-5"></i>
-            <span class="font-medium">Donation Locations</span>
-          </a>
-
-          <!-- Admin Only -->
-          <div id="adminMenu" class="hidden">
-            <div
-              class="px-5 py-3 mt-6 text-white/70 text-xs font-medium tracking-widest"
-            >
-              ADMIN TOOLS
-            </div>
-            <a
-              href="#"
-              onclick="switchTab('inventory')"
-              class="nav-item flex items-center gap-3 px-5 py-3.5 rounded-xl text-white"
-            >
-              <i class="fa-solid fa-droplet w-5"></i>
-              <span class="font-medium">Blood Inventory</span>
-            </a>
-            <a
-              href="#"
-              onclick="switchTab('search')"
-              class="nav-item flex items-center gap-3 px-5 py-3.5 rounded-xl text-white"
-            >
-              <i class="fa-solid fa-magnifying-glass w-5"></i>
-              <span class="font-medium">Search Donors</span>
-            </a>
-          </div>
-        </div>
-
-        <div class="p-4 border-t border-white/20">
-          <button
-            onclick="logout()"
-            class="w-full bg-white/20 hover:bg-white/30 py-3 px-4 rounded-2xl font-medium flex items-center justify-center gap-2 transition-colors"
-          >
-            <i class="fa-solid fa-right-from-bracket"></i>
-            <span>Logout</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Main Content -->
-      <div class="flex-1 flex flex-col overflow-hidden">
-        <!-- Top Bar -->
-        <div
-          class="h-14 bg-white border-b flex items-center justify-between px-8"
-        >
-          <div class="flex items-center gap-2 text-sm">
-            <span class="text-gray-500">PORTAL</span>
-            <span class="text-gray-400">/</span>
-            <span class="font-semibold text-red-600"
-              >Blood Donation System</span
-            >
-          </div>
-          <div class="flex items-center gap-6 text-sm">
-            <span id="currentDate" class="text-gray-500"></span>
-          </div>
-        </div>
-
-        <!-- Content Area -->
-        <div class="flex-1 overflow-auto p-8 main-grid bg-white">
-          <!-- DASHBOARD -->
-          <div id="tab-home" class="tab-content active">
-            <div class="welcome-banner rounded-3xl p-10 text-white mb-10">
-              <h1 class="text-4xl font-bold mb-3">Welcome back</h1>
-              <p class="text-white/80 text-lg mb-8">
-                Thank you for being a lifesaver. Your donations help save lives
-                every day.
-              </p>
-              <div class="flex gap-4">
-                <button
-                  class="bg-white text-red-600 px-7 py-3.5 rounded-2xl font-semibold hover:shadow-lg transition-all"
-                >
-                  Schedule Donation
+            <div class="p-4 border-t border-white/20">
+                <button onclick="logout()" class="w-full bg-white/20 hover:bg-white/30 py-3 px-4 rounded-2xl font-medium flex items-center justify-center gap-2 transition-colors">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
                 </button>
-                <button
-                  class="bg-white/20 hover:bg-white/30 px-7 py-3.5 rounded-2xl font-semibold transition-all"
-                >
-                  View History
-                </button>
-              </div>
             </div>
-          </div>
-
-          <!-- Other tabs remain the same (clean & professional) -->
-          <div
-            id="tab-profile"
-            class="tab-content bg-white rounded-3xl p-8 max-w-2xl mx-auto shadow-sm"
-          >
-            <h3 class="text-2xl font-bold mb-6">
-              Donor Profile & Registration
-            </h3>
-            <!-- ... rest of profile form ... -->
-            <div class="space-y-5">
-              <div class="form-row">
-                <label class="w-40">Full Name:</label
-                ><input type="text" id="regName" class="form-input" />
-              </div>
-              <div class="form-row">
-                <label class="w-40">Birth Date:</label
-                ><input
-                  type="text"
-                  id="regBirthdate"
-                  placeholder="YYYY-MM-DD"
-                  class="form-input"
-                />
-              </div>
-              <div class="form-row">
-                <label class="w-40">Age:</label
-                ><input
-                  type="text"
-                  id="regAge"
-                  readonly
-                  class="form-input bg-gray-100"
-                />
-              </div>
-              <div class="form-row">
-                <label class="w-40">Weight (kg):</label
-                ><input type="text" id="regWeight" class="form-input" />
-              </div>
-              <div class="form-row">
-                <label class="w-40">Contact:</label
-                ><input type="text" id="regContact" class="form-input" />
-              </div>
-              <div class="form-row">
-                <label class="w-40">Blood Group:</label>
-                <select id="regBlood" class="form-input">
-                  <option>A+</option>
-                  <option>A-</option>
-                  <option>B+</option>
-                  <option>B-</option>
-                  <option>O+</option>
-                  <option>O-</option>
-                  <option>AB+</option>
-                  <option>AB-</option>
-                </select>
-              </div>
-              <button
-                onclick="processRegistration()"
-                class="btn-primary w-full"
-              >
-                Save Donor Profile
-              </button>
-              <p
-                id="regOutput"
-                class="text-center font-medium min-h-[1.5em]"
-              ></p>
-            </div>
-          </div>
-
-          <!-- Eligibility, Locations, Inventory, Search tabs remain unchanged but look cleaner due to overall styling -->
         </div>
-      </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <div class="h-14 bg-white border-b flex items-center justify-between px-8">
+                <div class="flex items-center gap-2 text-sm">
+                    <span class="text-gray-500">PORTAL</span>
+                    <span class="text-gray-400">/</span>
+                    <span class="font-semibold text-red-600">Blood Donation System</span>
+                </div>
+                <div class="flex items-center gap-6 text-sm">
+                    <span id="currentDate" class="text-gray-500"></span>
+                </div>
+            </div>
+
+            <div class="flex-1 overflow-auto p-8 main-grid bg-white">
+                
+                <!-- DASHBOARD -->
+                <div id="tab-home" class="tab-content active">
+                    <div class="welcome-banner rounded-3xl p-10 text-white mb-10">
+                        <h1 class="text-4xl font-bold mb-3">Welcome back</h1>
+                        <p class="text-white/80 text-lg mb-8">Thank you for being a lifesaver. Your donations help save lives every day.</p>
+                        <div class="flex gap-4">
+                            <button class="bg-white text-red-600 px-7 py-3.5 rounded-2xl font-semibold hover:shadow-lg transition-all">Schedule Donation</button>
+                            <button class="bg-white/20 hover:bg-white/30 px-7 py-3.5 rounded-2xl font-semibold transition-all">View History</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- IMPROVED DONOR PROFILE -->
+                <div id="tab-profile" class="tab-content bg-white rounded-3xl p-8 max-w-2xl mx-auto shadow-sm">
+                    <h3 class="text-2xl font-bold mb-6">Donor Profile & Registration</h3>
+                    <div class="space-y-6">
+                        <div class="form-row">
+                            <label class="w-40 font-medium">Full Name</label>
+                            <input type="text" id="regName" class="form-input" placeholder="Enter full name">
+                        </div>
+                        <div class="form-row">
+                            <label class="w-40 font-medium">Birth Date</label>
+                            <input type="date" id="regBirthdate" class="form-input" onchange="calculateAge()">
+                        </div>
+                        <div class="form-row">
+                            <label class="w-40 font-medium">Age</label>
+                            <input type="text" id="regAge" readonly class="form-input bg-gray-100">
+                        </div>
+                        <div class="form-row">
+                            <label class="w-40 font-medium">Weight (kg)</label>
+                            <input type="number" id="regWeight" class="form-input" placeholder="e.g. 65">
+                        </div>
+                        <div class="form-row">
+                            <label class="w-40 font-medium">Contact Number</label>
+                            <input type="tel" id="regContact" class="form-input" placeholder="+1234567890">
+                        </div>
+                        <div class="form-row">
+                            <label class="w-40 font-medium">Blood Group</label>
+                            <select id="regBlood" class="form-input">
+                                <option value="">Select Blood Group</option>
+                                <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+                                <option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
+                            </select>
+                        </div>
+                        <button onclick="processRegistration()" class="btn-primary w-full">Save Donor Profile</button>
+                        <p id="regOutput" class="text-center font-medium min-h-[1.5em]"></p>
+                    </div>
+                </div>
+
+                <!-- FULL ELIGIBILITY CHECKER -->
+                <div id="tab-eligibility" class="tab-content bg-white rounded-3xl p-8 max-w-2xl mx-auto shadow-sm">
+                    <h3 class="text-2xl font-bold mb-6">Donation Eligibility Checker</h3>
+                    <div class="space-y-6">
+                        <div class="form-row">
+                            <label class="w-48 font-medium">Your Age</label>
+                            <input type="number" id="chkAge" class="form-input" placeholder="e.g. 28">
+                        </div>
+                        <div class="form-row">
+                            <label class="w-48 font-medium">Weight (kg)</label>
+                            <input type="number" id="chkWeight" class="form-input" placeholder="e.g. 65">
+                        </div>
+                        <div class="form-row">
+                            <label class="w-48 font-medium">Months Since Last Donation</label>
+                            <input type="number" id="chkMonths" class="form-input" placeholder="e.g. 4">
+                        </div>
+                        <div class="form-row">
+                            <label class="w-48 font-medium">Any Current Illness?</label>
+                            <select id="chkIllness" class="form-input">
+                                <option value="No">No</option>
+                                <option value="Yes">Yes</option>
+                            </select>
+                        </div>
+                        <button onclick="verifyEligibility()" class="btn-primary w-full">Check My Eligibility</button>
+                        <div id="chkOutput" class="text-center text-xl font-bold p-6 rounded-2xl mt-4 min-h-[80px]"></div>
+                    </div>
+                </div>
+
+                <!-- Other tabs (Locations, Inventory, Search) remain as before -->
+                <div id="tab-locations" class="tab-content bg-white rounded-3xl p-8 shadow-sm">...</div>
+                <div id="tab-inventory" class="tab-content bg-white rounded-3xl p-8 shadow-sm">...</div>
+                <div id="tab-search" class="tab-content bg-white rounded-3xl p-8 shadow-sm">...</div>
+
+            </div>
+        </div>
     </div>
 
     <script src="app.js"></script>
     <script>
-      function updateDate() {
-        const dateEl = document.getElementById("currentDate");
-        const now = new Date();
-        const options = {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        };
-        dateEl.textContent = now.toLocaleDateString("en-US", options);
-      }
+        function updateDate() {
+            const dateEl = document.getElementById("currentDate");
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            dateEl.textContent = now.toLocaleDateString("en-US", options);
+        }
 
-      window.addEventListener("load", () => {
-        updateDate();
-        setInterval(updateDate, 60000);
-        document.getElementById("userWelcomeDisplay").textContent = "";
-      });
+        function calculateAge() {
+            const birthInput = document.getElementById("regBirthdate").value;
+            if (!birthInput) return;
+            const birthDate = new Date(birthInput);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
+            document.getElementById("regAge").value = age;
+        }
+
+        window.addEventListener("load", () => {
+            updateDate();
+            setInterval(updateDate, 60000);
+            document.getElementById("userWelcomeDisplay").textContent = "";
+        });
     </script>
-  </body>
+</body>
 </html>
