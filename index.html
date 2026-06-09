@@ -50,6 +50,14 @@ BLOOD BANK PORTAL: IDENTIFIER
 ================================================================================
 -->
 
+<!-- 
+================================================================================
+BLOOD BANK PORTAL: IDENTIFIER
+================================================================================
+[ELEMENT IDs] ... (unchanged)
+================================================================================
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,6 +69,34 @@ BLOOD BANK PORTAL: IDENTIFIER
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-gray-100 min-h-screen font-sans">
+
+    <!-- ADMIN LOGIN MODAL -->
+    <div id="adminLoginModal" class="fixed inset-0 bg-black/70 hidden flex items-center justify-center z-50">
+        <div class="bg-white rounded-3xl p-10 w-full max-w-md mx-4 shadow-2xl">
+            <h2 class="text-3xl font-bold text-center mb-8 text-red-600">Admin Login</h2>
+            
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+                    <input type="text" id="adminUsername" class="form-input w-full" placeholder="admin">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input type="password" id="adminPassword" class="form-input w-full" placeholder="••••••••">
+                </div>
+                
+                <button onclick="loginAdmin()" class="btn-primary w-full py-4 text-lg font-semibold">
+                    Login as Administrator
+                </button>
+                
+                <p id="loginMessage" class="text-center text-sm min-h-[1.5em]"></p>
+            </div>
+            
+            <button onclick="closeAdminLogin()" class="mt-6 text-gray-500 hover:text-gray-700 text-sm w-full">
+                Cancel
+            </button>
+        </div>
+    </div>
 
     <div class="flex h-screen overflow-hidden" id="mainAppWidget">
         
@@ -121,8 +157,16 @@ BLOOD BANK PORTAL: IDENTIFIER
                 </div>
             </div>
 
-            <div class="p-4 border-t border-white/20">
-                <button onclick="logout()" class="w-full bg-white/20 hover:bg-white/30 py-3 px-4 rounded-2xl font-medium flex items-center justify-center gap-2 transition-colors">
+            <!-- Admin Login Button + Logout -->
+            <div class="p-4 border-t border-white/20 space-y-2">
+                <button onclick="showAdminLogin()" 
+                        class="w-full bg-white/20 hover:bg-white/30 py-3 px-4 rounded-2xl font-medium flex items-center justify-center gap-2 transition-colors">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>Admin Login</span>
+                </button>
+                
+                <button onclick="logout()" 
+                        class="w-full bg-white/20 hover:bg-white/30 py-3 px-4 rounded-2xl font-medium flex items-center justify-center gap-2 transition-colors">
                     <i class="fa-solid fa-right-from-bracket"></i>
                     <span>Logout</span>
                 </button>
@@ -156,6 +200,7 @@ BLOOD BANK PORTAL: IDENTIFIER
                     </div>
                 </div>
 
+                <!-- Profile, Eligibility, Locations, Inventory, Search tabs remain as before -->
                 <!-- IMPROVED DONOR PROFILE -->
                 <div id="tab-profile" class="tab-content bg-white rounded-3xl p-8 max-w-2xl mx-auto shadow-sm">
                     <h3 class="text-2xl font-bold mb-6">Donor Profile & Registration</h3>
@@ -226,11 +271,45 @@ BLOOD BANK PORTAL: IDENTIFIER
                 <div id="tab-inventory" class="tab-content bg-white rounded-3xl p-8 shadow-sm">...</div>
                 <div id="tab-search" class="tab-content bg-white rounded-3xl p-8 shadow-sm">...</div>
 
+                <!-- BLOOD INVENTORY (Admin) -->
+                <div id="tab-inventory" class="tab-content bg-white rounded-3xl p-8 shadow-sm">
+                    <h3 class="text-2xl font-bold mb-4">Blood Inventory</h3>
+                    <textarea id="inventoryDisplay" readonly class="display-box w-full h-96 p-6 text-sm bg-gray-50 border rounded-2xl"></textarea>
+                    <button onclick="loadInventory()" class="btn-primary mt-4">Refresh Inventory</button>
+                </div>
+
+                <!-- SEARCH DONORS (Admin) -->
+                <div id="tab-search" class="tab-content bg-white rounded-3xl p-8 shadow-sm">
+                    <h3 class="text-2xl font-bold mb-6">Search Registered Donors</h3>
+                    <div class="max-w-2xl space-y-6">
+                        <div class="form-row">
+                            <label class="w-40 font-medium">Search Term</label>
+                            <input type="text" id="searchInput" class="form-input" placeholder="Name or Blood Type">
+                        </div>
+                        <div class="form-row">
+                            <label class="w-40 font-medium">Search By</label>
+                            <select id="searchMode" class="form-input">
+                                <option value="Name">Name</option>
+                                <option value="Blood Type">Blood Type</option>
+                            </select>
+                        </div>
+                        <button onclick="handleSearch()" class="btn-primary">Search</button>
+                        <textarea id="searchOutput" readonly class="display-box w-full h-96 p-6 text-sm bg-gray-50 border rounded-2xl"></textarea>
+                    </div>
+                </div>
+
+                <div id="tab-profile" class="tab-content bg-white rounded-3xl p-8 max-w-2xl mx-auto shadow-sm">...</div>
+                <div id="tab-eligibility" class="tab-content bg-white rounded-3xl p-8 max-w-2xl mx-auto shadow-sm">...</div>
+                <div id="tab-locations" class="tab-content bg-white rounded-3xl p-8 shadow-sm">...</div>
+                <div id="tab-inventory" class="tab-content bg-white rounded-3xl p-8 shadow-sm">...</div>
+                <div id="tab-search" class="tab-content bg-white rounded-3xl p-8 shadow-sm">...</div>
+
             </div>
         </div>
     </div>
 
     <script src="app.js"></script>
+    <script src="admin.js"></script>
     <script>
         function updateDate() {
             const dateEl = document.getElementById("currentDate");

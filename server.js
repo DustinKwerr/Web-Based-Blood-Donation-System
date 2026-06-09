@@ -53,6 +53,11 @@ app.get('/api/search', (req, res) => {
     runPHPModule('search', payload, res);
 });
 
+// Admin Login Endpoint
+app.post('/api/admin-login', (req, res) => {
+    runPHPModule('admin-login', req.body, res);
+});
+
 app.listen(PORT, () => {
     console.log(`Unified Web Backend Active: Node.js running on http://localhost:${PORT}`);
 });

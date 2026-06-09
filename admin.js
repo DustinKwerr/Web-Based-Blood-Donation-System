@@ -1,28 +1,65 @@
-/**
- * ADMIN FEATURES ONLY
- * Blood Inventory + Donor Search
- */
+let isAdminLoggedIn = false;
 
-// Load Blood Inventory
-function loadInventory() {
-    const mockInventoryData = {
-        "A+": 42, "A-": 18, "B+": 35, "B-": 12, 
-        "O+": 68, "O-": 29, "AB+": 15, "AB-": 8
-    };
-
-    let text = "CURRENT BLOOD INVENTORY\n";
-    text += "══════════════════════\n\n";
-    
-    for (const [bloodType, qty] of Object.entries(mockInventoryData)) {
-        text += `${bloodType.padEnd(5)} : ${qty.toString().padStart(3)} units\n`;
-    }
-    
-    const display = document.getElementById("inventoryDisplay");
-    if (display) display.value = text;
+function showAdminLogin() {
+    document.getElementById('adminLoginModal').classList.remove('hidden');
 }
 
-// Search Registered Donors
-function handleSearch() {
+function closeAdminLogin() {
+    document.getElementById('adminLoginModal').classList.add('hidden');
+}
+
+async function loginAdmin() {
+    const username = document.getElementById('adminUsername').value.trim();
+    const password = document.getElementById('adminPassword').value.trim();
+    const messageEl = document.getElementById('loginMessage');
+
+    if (!username || !password) {
+        messageEl.innerHTML = '<span class="text-red-600">Please enter username and password</span>';
+        return;
+    }
+
+    try {
+        const res = await fetch('http://localhost:5000/api/admin-login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+            isAdminLoggedIn = true;
+            document.getElementById('adminMenu').classList.remove('hidden');
+            closeAdminLogin();
+            alert(`✅ Welcome, Administrator ${data.username}!`);
+            switchTab('inventory');
+        } else {
+            messageEl.innerHTML = `<span class="text-red-600">${data.message}</span>`;
+        }
+    } catch (err) {
+        messageEl.innerHTML = '<span class="text-red-600">Cannot connect to server. Is Node.js running?</span>';
+    }
+}
+
+// Load Inventory
+async function loadInventory() {
+    const display = document.getElementById("inventoryDisplay");
+    try {
+        const res = await fetch('http://localhost:5000/api/inventory');
+        const data = await res.json();
+
+        let text = "CURRENT BLOOD INVENTORY\n══════════════════════\n\n";
+        Object.entries(data).forEach(([type, qty]) => {
+            text += `${type.padEnd(6)} : ${qty} units\n`;
+        });
+        display.value = text;
+    } catch (e) {
+        display.value = "Error connecting to database.";
+    }
+}
+
+// Search Donors
+async function handleSearch() {
     const query = document.getElementById("searchInput").value.trim();
     const mode = document.getElementById("searchMode").value;
     const output = document.getElementById("searchOutput");
@@ -32,47 +69,23 @@ function handleSearch() {
         return;
     }
 
-    // Mock search results
-    let resultText = `SEARCH RESULTS (${mode})\n`;
-    resultText += "══════════════════════\n\n";
+    try {
+        const res = await fetch(`http://localhost:5000/api/search?mode=${mode}&query=${encodeURIComponent(query)}`);
+        const results = await res.json();
 
-    if (query.toLowerCase().includes("dustin") || mode === "Name") {
-        resultText += `Name: Dustin Kwer Indolos\n`;
-        resultText += `Blood Group: O+\n`;
-        resultText += `Last Donation: 2026-03-15\n`;
-        resultText += `Total Donations: 12\n`;
-        resultText += `Status: Active Donor\n`;
-    } else {
-        resultText += `No records found for "${query}"\n`;
-        resultText += `Try searching with different keywords.`;
-    }
-
-    output.value = resultText;
-}
-
-// Toggle Admin Mode (for testing)
-function toggleAdminMode(isAdmin) {
-    const adminMenu = document.getElementById('adminMenu');
-    if (isAdmin) {
-        adminMenu.classList.remove('hidden');
-        alert("Admin Mode Activated\nInventory and Search tools are now available.");
-    } else {
-        adminMenu.classList.add('hidden');
-    }
-}
-
-// Auto load inventory when admin tab is opened
-document.addEventListener('DOMContentLoaded', () => {
-    // Optional: Auto-refresh inventory when switching to admin tab
-    const observer = new MutationObserver(() => {
-        const inventoryTab = document.getElementById('tab-inventory');
-        if (inventoryTab && !inventoryTab.classList.contains('hidden')) {
-            loadInventory();
+        let text = `SEARCH RESULTS (${mode})\n══════════════════════\n\n`;
+        if (results.length === 0) {
+            text += "No matching records found.";
+        } else {
+            results.forEach(d => {
+                text += `Name: ${d.name}\n`;
+                text += `Blood Type: ${d.blood_type}\n`;
+                text += `Age: ${d.age} | Weight: ${d.weight}kg\n`;
+                text += `Contact: ${d.contact}\n\n`;
+            });
         }
-    });
-    
-    observer.observe(document.getElementById('mainAppWidget') || document.body, { 
-        attributes: true, 
-        subtree: true 
-    });
-});
+        output.value = text;
+    } catch (e) {
+        output.value = "Error connecting to database.";
+    }
+}
