@@ -123,3 +123,10 @@ function handleSearch() {
 window.addEventListener('DOMContentLoaded', () => {
     loadInventory();
 });
+
+// Show admin menu only for admins
+window.addEventListener('DOMContentLoaded', () => {
+    if (userRole === "Admin") {
+        document.getElementById('adminMenu').classList.remove('hidden');
+    }
+});
